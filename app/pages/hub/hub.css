@@ -1,0 +1,37 @@
+.module-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.module-title img{
+  height: 26px;
+  width:auto;
+  opacity:.95;
+}
+
+.btn-small{
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.module-card{
+  cursor: pointer;
+  transition: transform .08s ease, border-color .12s ease, background .12s ease;
+}
+
+.module-card:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,77,26,.22);
+}
+
+/* Se estiver locked, não parece clicável */
+.module-card.locked{
+  cursor: default;
+  opacity: .75;
+}
+.module-card.locked:hover{
+  transform: none;
+  border-color: rgba(255,255,255,.08);
+}

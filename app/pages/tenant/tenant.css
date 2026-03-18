@@ -1,0 +1,83 @@
+.tenant-item{
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.tenant-item:hover{ border-color: rgba(255,77,26,.25); }
+.tenant-item.active{
+  border-color: rgba(255,77,26,.55);
+  box-shadow: 0 0 0 4px rgba(255,77,26,.10);
+}
+
+.tenant-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width: 0;
+}
+
+.tenant-logo-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex: 0 0 auto;
+}
+
+.tenant-logo{
+  max-height: 46px;
+  max-width: 120px;
+  object-fit: contain;
+  opacity: .95;
+  transition: transform .12s ease;
+}
+
+.tenant-item:hover .tenant-logo{
+  transform: scale(1.04);
+}
+
+.tenant-initials{
+  font-weight: 700;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.tenant-meta{ min-width:0; }
+
+.tenant-name{
+  font-weight:700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tenant-sub{
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(255,255,255,.62);
+}
+
+.tenant-item{
+  transition: transform .08s ease, border-color .12s ease, background .12s ease;
+}
+
+.tenant-item:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,77,26,.25);
+}
+
+.tenant-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 16px;
+}

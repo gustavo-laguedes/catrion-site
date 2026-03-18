@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catrion</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/catrion-favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/catrion-favicon.png">
+  <link rel="apple-touch-icon" href="/assets/catrion-favicon.png">
+
+  <link rel="stylesheet" href="shared/styles/tokens.css" />
+  <link rel="stylesheet" href="shared/styles/base.css" />
+  <link rel="stylesheet" href="shared/styles/components.css" />
+  <link rel="stylesheet" href="pages/home/home.css" />
+
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#0B0F14">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+</head>
+
+<body>
+
+  <div id="top"></div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/">
+        <img src="assets/catrion-logo.png" alt="Catrion" />
+      </a>
+
+      <nav class="nav">
+        <a href="#modulos">Módulos</a>
+        <a href="#plataforma">Plataforma</a>
+        <a href="#contato">Contato</a>
+        <button class="btn btn-primary js-portal">Acessar Portal</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="kicker">CATRION PLATFORM</div>
+          <h1 class="h1">Gestão modular, rápida e elegante.</h1>
+          <p class="lead">
+  Plataforma de gestão com <b>login único</b> e <b>multi-empresa</b>, feita para rodar rápido no dia a dia.
+  Hoje em produção: <b>Core</b>. Novos módulos entram conforme sua operação cresce.
+</p>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary js-portal">Acessar Portal</button>
+            <a class="btn" href="#modulos">Ver módulos</a>
+          </div>
+
+          <div class="bullets">
+  <div class="bullet"><i></i> Um acesso. Uma empresa. Tudo no mesmo portal.</div>
+  <div class="bullet"><i></i> Core já em produção: vendas, caixa e estoque.</div>
+  <div class="bullet"><i></i> Plataforma pronta para evoluir com permissões e expansão modular.</div>
+</div>
+        </div>
+
+        <div class="reveal">
+          <div class="screen">
+            <div class="screen-top">
+              <div class="dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot accent"></span>
+              </div>
+              <img class="core-logo" src="assets/core-logo.png" alt="Core" />
+            </div>
+
+            <div class="screen-body">
+              <div class="fake-row" style="width: 82%"></div>
+              <div class="fake-row" style="width: 64%"></div>
+              <div class="fake-row" style="width: 92%"></div>
+
+              <div class="card">
+                <div class="card-inner">
+                  <div class="small">Prévia animada (mock)</div>
+                  <div style="height:10px"></div>
+                  <div class="fake-row" style="width: 55%"></div>
+                  <div style="height:10px"></div>
+                  <div class="fake-row" style="width: 78%"></div>
+                </div>
+              </div>
+
+              <div class="fake-row" style="width: 70%"></div>
+            </div>
+          </div>
+          <div class="small" style="margin-top:10px">
+            (Depois a gente troca esse mock por screenshots reais do Core/Hub, com transição suave.)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section class="section" id="modulos">
+      <div class="container">
+        <div class="reveal">
+          <div class="kicker">MÓDULOS</div>
+          <h2 style="margin:10px 0 8px">Escolha o que você precisa. Expanda quando quiser.</h2>
+          <p class="lead" style="max-width: 780px">
+            Cada módulo roda dentro do Portal (app) com sessão compartilhada. Sem segundo login. Sem gambiarra.
+          </p>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="grid-3">
+  <!-- CORE -->
+  <div class="card module reveal" id="coreCard" style="cursor:pointer">
+    <div class="card-inner">
+      <div class="module-head">
+        <div class="tag">CORE</div>
+        <img class="module-logo" src="assets/core-logo.png" alt="Core" />
+      </div>
+
+      <h3>Ponto de venda + estoque</h3>
+      <p>Vendas, caixa, produtos e movimentos de estoque — com UX focada em velocidade.</p>
+
+      <div style="height:10px"></div>
+      <button class="btn btn-primary btn-small" type="button" id="btnCoreDetails">
+        Ver o que o Core faz
+      </button>
+    </div>
+  </div>
+
+  <!-- Em desenvolvimento (sem nome) -->
+  <div class="card module reveal muted-module">
+    <div class="card-inner">
+      <div class="tag soft">EM DESENVOLVIMENTO</div>
+      <h3>Novos módulos a caminho</h3>
+      <p>Estamos preparando novos sistemas para ampliar o portal conforme a necessidade do cliente.</p>
+    </div>
+  </div>
+
+  <!-- Em desenvolvimento (sem nome) -->
+  <div class="card module reveal muted-module">
+    <div class="card-inner">
+      <div class="tag soft">EM DESENVOLVIMENTO</div>
+      <h3>Operação mais completa</h3>
+      <p>Controle, rastreabilidade e rotinas de chão de fábrica entram em etapas, sem bagunçar o que já funciona.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Detalhes do Core (abre ao clicar) -->
+<div class="core-details reveal" id="coreDetails" style="display:none; margin-top:16px">
+  <div class="card">
+    <div class="card-inner">
+      <div class="kicker">CORE — O QUE ENTREGA</div>
+      <h3 style="margin:8px 0 10px">Pontos-chave do sistema</h3>
+
+      <div class="details-grid">
+  <div class="detail">
+    <h4>Vendas rápidas (sem travar o balcão)</h4>
+    <p class="muted">Busca inteligente, carrinho, desconto e finalização com fluxo enxuto — pensado para velocidade.</p>
+  </div>
+
+  <div class="detail">
+    <h4>Caixa com leitura real do dia</h4>
+    <p class="muted">Abertura/fechamento, sangria/suprimento e visão clara do que é teórico vs. real.</p>
+  </div>
+
+  <div class="detail">
+    <h4>Estoque com movimentações e histórico</h4>
+    <p class="muted">Entrada, ajuste e perda com registro — para entender o “porquê” do saldo, não só o número.</p>
+  </div>
+
+  <div class="detail">
+    <h4>Rastreabilidade operacional</h4>
+    <p class="muted">Do produto ao movimento: você consegue enxergar o caminho das alterações e manter controle do processo.</p>
+  </div>
+
+  <div class="detail">
+    <h4>Relatórios e visão gerencial</h4>
+    <p class="muted">Resumo de vendas, caixa e produtos — com base pronta para evoluir em dashboards e indicadores.</p>
+  </div>
+
+  <div class="detail">
+    <h4>Permissões e expansão modular</h4>
+    <p class="muted">O portal já nasce preparado para permissões por usuário e crescimento por módulos, sem “segundo login”.</p>
+  </div>
+</div>
+
+      <div style="height:12px"></div>
+      <a class="btn" href="./app/index.html#/login">Abrir o Portal</a>
+    </div>
+  </div>
+</div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section class="section" id="plataforma">
+      <div class="container">
+        <div class="reveal">
+          <div class="kicker">PLATAFORMA</div>
+          <h2 style="margin:10px 0 8px">Uma base única. Vários sistemas. Um único acesso.</h2>
+          <p class="lead" style="max-width: 820px">
+  A Catrion entrega sistemas que entram em operação de forma gradual e organizada.
+  Um portal único, experiência consistente e base pronta para crescer sem travar sua rotina.
+</p>
+
+<div class="partners" style="margin-top:16px">
+  <div class="kicker">PARCEIROS EM PRODUÇÃO</div>
+  <div class="partners-row">
+  <a
+  class="partner-card partner-link"
+  href="https://www.instagram.com/clube_dosuplemento/"
+  target="_blank"
+  rel="noopener"
+  aria-label="Clube do Suplemento no Instagram"
+>
+  <div class="partner-left">
+    <img class="partner-logo" src="assets/clubedosuplemento-logo.png" alt="Clube do Suplemento" />
+    <div class="partner-meta">
+      <div class="partner-name">Clube do Suplemento</div>
+      <div class="muted small">Primeiro parceiro com o Core em implantação.</div>
+    </div>
+  </div>
+</a>
+</div>
+  </div>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section class="section" id="contato">
+      <div class="container">
+        <div class="reveal">
+          <div class="kicker">CONTATO</div>
+<h2 style="margin:10px 0 8px">Vamos colocar isso em produção.</h2>
+<p class="lead" style="max-width:820px">
+  Conte rapidamente sua operação e o que você precisa. A gente te responde com o caminho mais direto.
+</p>
+
+<div class="contact-grid">
+  <form class="contact-form" onsubmit="event.preventDefault(); alert('Formulário: depois ligamos o envio.');">
+    <label class="field">
+      <span class="label">NOME</span>
+      <input type="text" placeholder="Seu nome" required>
+    </label>
+
+    <label class="field">
+      <span class="label">E-MAIL</span>
+      <input type="email" placeholder="seuemail@empresa.com" required>
+    </label>
+
+    <label class="field">
+      <span class="label">MENSAGEM</span>
+      <textarea rows="4" placeholder="Me conte um pouco do seu cenário e do que você quer melhorar..." required></textarea>
+    </label>
+
+    <div class="contact-actions">
+  <button class="btn btn-primary" type="submit">Enviar</button>
+  <a class="btn" href="#top">Voltar ao topo</a>
+</div>
+  </form>
+
+  <div class="contact-side">
+    <div class="contact-box">
+      <div class="kicker">REDES</div>
+
+      <div class="social">
+        <img src="assets/instagram-logo.png" alt="Instagram" class="social-ico">
+        <div class="social-meta">
+          <div class="social-name">Instagram</div>
+          <div class="muted small">link: (colocar aqui depois)</div>
+        </div>
+      </div>
+
+      <div class="social">
+        <img src="assets/linkedin-logo.png" alt="LinkedIn" class="social-ico">
+        <div class="social-meta">
+          <div class="social-name">LinkedIn</div>
+          <div class="muted small">https://www.linkedin.com/company/catriontech/</div>
+        </div>
+      </div>
+
+      <div class="social">
+        <img src="assets/whatsapp-logo.png" alt="WhatsApp" class="social-ico">
+        <div class="social-meta">
+          <div class="social-name">WhatsApp</div>
+          <div class="muted small">link: (colocar aqui depois)</div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="muted small">
+        Assim que o número oficial estiver pronto, a gente coloca o botão direto pro WhatsApp aqui.
+      </div>
+    </div>
+  </div>
+</div>
+        
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="pages/home/home.js"></script>
+
+  <!-- Modal: Como instalar no iPhone/iPad -->
+<div class="modal" id="installModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Adicionar à Tela de Início</div>
+      <button class="modal-close" id="installModalClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-text">
+        No iPhone/iPad (Safari), o “Instalar” não aparece automático.
+      </p>
+      <ol class="modal-steps">
+        <li>Abra este site no <b>Safari</b>.</li>
+        <li>Toque em <b>Compartilhar</b> (ícone do quadrado com seta).</li>
+        <li>Escolha <b>Adicionar à Tela de Início</b>.</li>
+        <li>Confirme em <b>Adicionar</b>.</li>
+      </ol>
+      <p class="modal-text small">
+        Depois disso, você abre a Catrion como app, sem ficar indo no navegador.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="/shared/js/pwa.js"></script>
+
+</body>
+</html>

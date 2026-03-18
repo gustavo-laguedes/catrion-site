@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catrion Portal</title>
+
+  <!-- estilos globais (da raiz) -->
+  <link rel="stylesheet" href="../shared/styles/tokens.css" />
+  <link rel="stylesheet" href="../shared/styles/base.css" />
+  <link rel="stylesheet" href="../shared/styles/components.css" />
+
+  <!-- estilos do portal -->
+  <link rel="stylesheet" href="./assets/css/app.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/catrion-logo.png" alt="Catrion" />
+      </a>
+
+      <nav class="nav" id="portalNav" style="display:none;">
+        <a href="#/hub">Hub</a>
+        <a href="#/tenant">Empresa</a>
+        <button class="btn" id="btnLogout">Sair</button>
+      </nav>
+
+      <div id="portalNavAuth" style="display:flex; gap:10px; align-items:center;">
+        <span class="small">Portal</span>
+        <span class="small sep">|</span>
+  <a class="small link" href="../index.html#contato">Suporte</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 22px 0 70px;">
+    <div id="appRoot"></div>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

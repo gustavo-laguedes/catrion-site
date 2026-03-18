@@ -1,0 +1,24 @@
+:root{
+  /* Base metálica */
+  --bg: #3A4048;         /* cinza principal */
+
+  /* Profundidade (quase preto) */
+  --deep: #11151A; 
+
+  /* Superfície */
+  --surface: #1E242C;
+  --surface-2: #242B35;
+
+  --border: #3B4452;
+
+  --text: #E9EDF2;
+  --muted: #AAB4C0;
+
+  --accent: #FF4D1A;
+  --accent-2: #FF6A3D;
+
+  --radius: 18px;
+  --shadow: 0 20px 50px rgba(0,0,0,.25);
+
+  --container: 1120px;
+}

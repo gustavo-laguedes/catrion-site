@@ -1,0 +1,78 @@
+<section class="login-wrap">
+  <div class="login-card">
+
+    <header class="login-header">
+      <h1>Entrar no Portal</h1>
+      <p>
+  Acesse seu ambiente com login único e seguro.
+</p>
+    </header>
+
+    <form id="loginForm" class="login-form" autocomplete="on">
+      <label class="field">
+        <span class="label">EMAIL</span>
+        <input id="email" name="email" type="email" placeholder="seuemail@empresa.com" autocomplete="email" required />
+      </label>
+
+      <label class="field">
+        <span class="label">SENHA</span>
+        <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </label>
+
+      <div class="login-actions">
+  <button class="btn btn-primary" id="btnEnter" type="submit">Entrar</button>
+</div>
+
+<a class="link forgot-under" href="#" id="btnForgot" role="button">
+  Esqueceu a senha?
+</a>
+
+    </form>
+
+    <hr class="hr" style="margin:18px 0">
+
+    <div class="install-block">
+      <div class="install-title">Instalar no dispositivo</div>
+      <div class="install-sub muted">Pra abrir como app (PWA) e não depender do navegador toda vez.</div>
+
+      <div class="install-grid">
+        <!-- Android / PC -->
+        <div class="install-col">
+          <div class="install-head">
+            <img class="os-logo" src="../../../assets/android-logo.png" alt="Android" />
+            <img class="os-logo" src="../../../assets/windows-logo.png" alt="Windows" />
+            <div class="os-title">Android / PC</div>
+          </div>
+
+          <div class="install-actions">
+            <button class="btn btn-primary" id="btnInstall" type="button">Instalar</button>
+            <button class="btn" id="btnHowInstall" type="button">Como instalar</button>
+          </div>
+
+          <div class="small muted" style="margin-top:10px">
+            Se não aparecer “Instalar”, use o menu ⋮ do navegador → “Instalar app”.
+          </div>
+        </div>
+
+        <div class="install-divider" aria-hidden="true"></div>
+
+        <!-- iPhone -->
+        <div class="install-col">
+          <div class="install-head">
+           <img class="os-logo" src="../../../assets/apple-logo.png" alt="Apple" />
+            <div class="os-title">iPhone (iOS)</div>
+          </div>
+
+          <div class="install-actions">
+            <button class="btn" id="btnHowInstallIOS" type="button">Como instalar</button>
+          </div>
+
+          <div class="small muted" style="margin-top:10px">
+            Safari → Compartilhar → “Adicionar à Tela de Início”.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

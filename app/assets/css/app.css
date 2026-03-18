@@ -1,0 +1,92 @@
+.portal-shell{ display:grid; gap: 14px; }
+
+.portal-header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 12px; margin: 6px 0 4px;
+}
+
+.portal-title{ margin:0; font-size: 18px; }
+
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.panel-inner{ padding: 18px; }
+
+.form{ display:grid; gap: 12px; max-width: 420px; }
+
+.label{
+  font-size: 12px; color: var(--muted);
+  letter-spacing:.08em; text-transform: uppercase;
+}
+
+.input{
+  width:100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  color: var(--text);
+  outline: none;
+}
+.input:focus{
+  border-color: rgba(255,77,26,.45);
+  box-shadow: 0 0 0 4px rgba(255,77,26,.10);
+}
+
+.row{ display:flex; gap: 12px; flex-wrap: wrap; align-items:center; }
+
+.badge{
+  font-size:12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+}
+
+.notice{ color: var(--muted); line-height:1.55; margin:0; }
+
+.hub-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media(max-width: 900px){ .hub-grid{ grid-template-columns: 1fr; } }
+
+.module-card{
+  position: relative;
+  overflow:hidden;
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease;
+}
+.module-card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,77,26,.25);
+}
+.locked{ cursor:not-allowed; opacity:.75; }
+.locked:hover{ transform:none; }
+
+.lock{
+  position:absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,77,26,.25);
+  background: rgba(255,77,26,.10);
+  color: var(--text);
+}
+
+.kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  color: rgba(255,255,255,.75);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  padding: 3px 8px;
+  border-radius: 8px;
+}
