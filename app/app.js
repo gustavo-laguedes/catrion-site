@@ -97,18 +97,32 @@ const router = {
 
         if(!session && !isPublic){ this.go("/login"); return; }
 
-    if(session && path === "/login"){
-      const redirectTarget = getRedirectTarget();
+    if (session && path === "/login") {
+  const redirectTarget = getRedirectTarget();
 
-      if (redirectTarget) {
-        clearPendingRedirect();
-        window.location.href = redirectTarget;
-        return;
-      }
+  if (redirectTarget) {
+    const accessToken = session?.access_token;
+    const refreshToken = session?.refresh_token;
 
-      this.go("/tenant");
+    if (accessToken && refreshToken) {
+      const url = new URL(redirectTarget);
+
+      url.searchParams.set("access_token", accessToken);
+      url.searchParams.set("refresh_token", refreshToken);
+
+      clearPendingRedirect();
+      window.location.href = url.toString();
       return;
     }
+
+    clearPendingRedirect();
+    window.location.href = redirectTarget;
+    return;
+  }
+
+  this.go("/tenant");
+  return;
+}
 
     await loadPageCSS(routes[path].css);
     await routes[path].render(root, this);
