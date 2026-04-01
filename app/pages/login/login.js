@@ -7,6 +7,7 @@ import {
   clearPendingRedirect
 } from "../../utils/storage.js";
 import { getAccessContext } from "../../services/tenants/tenants.js";
+import { supabase } from "../../services/supabase/supabaseClient.js";
 
 export async function renderLogin(root, router){
   const html = await fetch("./pages/login/login.html").then(r => r.text());
@@ -95,10 +96,22 @@ export async function renderLogin(root, router){
       const redirectTarget = resolvePostLoginRedirect();
 
       if (redirectTarget) {
-        clearPendingRedirect();
-        window.location.href = redirectTarget;
-        return;
-      }
+  const { data } = await supabase.auth.getSession();
+
+  const accessToken = data?.session?.access_token;
+  const refreshToken = data?.session?.refresh_token;
+
+  if (accessToken && refreshToken) {
+    const url = new URL(redirectTarget);
+
+    url.searchParams.set("access_token", accessToken);
+    url.searchParams.set("refresh_token", refreshToken);
+
+    clearPendingRedirect();
+    window.location.href = url.toString();
+    return;
+  }
+}
 
       router.go("/tenant");
     }catch(err){
