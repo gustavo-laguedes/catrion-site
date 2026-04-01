@@ -1,7 +1,7 @@
 import { $, mountHTML } from "./utils/dom.js";
 import { getSession, signOut, onAuthStateChange } from "./services/auth/auth.js";
 import { getSelectedTenant } from "./services/tenants/tenants.js";
-import { getPendingRedirect, clearPendingRedirect } from "./utils/storage.js";
+import { getPendingRedirect, clearPendingRedirect, setPendingRedirect } from "./utils/storage.js";
 
 import { renderLogin } from "./pages/login/login.js";
 import { renderTenant } from "./pages/tenant/tenant.js";
@@ -52,6 +52,24 @@ function getRedirectTarget(){
   return getPendingRedirect() || "";
 }
 
+function hasLogoutRequest(){
+  const search = new URLSearchParams(window.location.search);
+  const hash = getHashQueryParams();
+
+  return search.get("logout") === "1" || hash.get("logout") === "1";
+}
+
+function buildCleanLoginUrl(){
+  const redirectTarget = getRedirectTarget();
+  const base = `${window.location.origin}${window.location.pathname}#/login`;
+
+  if (!redirectTarget) {
+    return base;
+  }
+
+  return `${base}?redirect=${encodeURIComponent(redirectTarget)}`;
+}
+
 function setNavVisibility(isAuthed){
   $("#portalNav").style.display = isAuthed ? "flex" : "none";
   $("#portalNavAuth").style.display = isAuthed ? "none" : "flex";
@@ -83,8 +101,26 @@ function renderPlaceholder(root, router, title, desc){
 
 const router = {
   go(path){ location.hash = "#" + path; },
+
   async render(){
     const root = $("#appRoot");
+
+    if (hasLogoutRequest()) {
+      const redirectTarget = getRedirectTarget();
+
+      if (redirectTarget) {
+        setPendingRedirect(redirectTarget);
+      }
+
+      try {
+        await signOut({ preserveRedirect: true });
+      } catch (error) {
+        console.warn("[portal] erro ao executar logout forçado", error);
+      }
+
+      window.history.replaceState({}, "", buildCleanLoginUrl());
+    }
+
     const session = await getSession();
 
     setNavVisibility(!!session);
@@ -92,37 +128,39 @@ const router = {
     let path = getHashPath();
     if(!routes[path]) path = "/login";
 
-    // Rotas públicas
     const isPublic = (path === "/login" || path === "/reset");
 
-        if(!session && !isPublic){ this.go("/login"); return; }
-
-    if (session && path === "/login") {
-  const redirectTarget = getRedirectTarget();
-
-  if (redirectTarget) {
-    const accessToken = session?.access_token;
-    const refreshToken = session?.refresh_token;
-
-    if (accessToken && refreshToken) {
-      const url = new URL(redirectTarget);
-
-      url.searchParams.set("access_token", accessToken);
-      url.searchParams.set("refresh_token", refreshToken);
-
-      clearPendingRedirect();
-      window.location.href = url.toString();
+    if(!session && !isPublic){
+      this.go("/login");
       return;
     }
 
-    clearPendingRedirect();
-    window.location.href = redirectTarget;
-    return;
-  }
+    if (session && path === "/login") {
+      const redirectTarget = getRedirectTarget();
 
-  this.go("/tenant");
-  return;
-}
+      if (redirectTarget) {
+        const accessToken = session?.access_token;
+        const refreshToken = session?.refresh_token;
+
+        if (accessToken && refreshToken) {
+          const url = new URL(redirectTarget);
+
+          url.searchParams.set("access_token", accessToken);
+          url.searchParams.set("refresh_token", refreshToken);
+
+          clearPendingRedirect();
+          window.location.href = url.toString();
+          return;
+        }
+
+        clearPendingRedirect();
+        window.location.href = redirectTarget;
+        return;
+      }
+
+      this.go("/tenant");
+      return;
+    }
 
     await loadPageCSS(routes[path].css);
     await routes[path].render(root, this);
@@ -136,7 +174,6 @@ $("#btnLogout")?.addEventListener("click", async ()=>{
 
 window.addEventListener("hashchange", ()=>router.render());
 
-// Re-render automático quando o Supabase mudar a sessão
 onAuthStateChange(()=>router.render());
 
 router.render();

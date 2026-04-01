@@ -60,17 +60,32 @@ export async function signIn(email, password){
   return data.session;
 }
 
-export async function signOut(){
+export async function signOut(options = {}){
+  const preserveRedirect = options.preserveRedirect === true;
+  const redirectSnapshot = preserveRedirect ? sessionStorage.getItem("catrion.portal.redirect") || "" : "";
+
   clearSharedDevPanelSession();
-  clearPendingRedirect();
+
+  if (!preserveRedirect) {
+    clearPendingRedirect();
+  }
 
   if(!SUPABASE_READY){
     clearMockSession();
+
+    if (preserveRedirect && redirectSnapshot) {
+      sessionStorage.setItem("catrion.portal.redirect", redirectSnapshot);
+    }
+
     return;
   }
 
   const { error } = await supabase.auth.signOut();
   if(error) throw error;
+
+  if (preserveRedirect && redirectSnapshot) {
+    sessionStorage.setItem("catrion.portal.redirect", redirectSnapshot);
+  }
 }
 
 export function onAuthStateChange(handler){
