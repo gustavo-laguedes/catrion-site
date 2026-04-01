@@ -1,4 +1,9 @@
-import { readStore, writeStore } from "../../utils/storage.js";
+import {
+  readStore,
+  writeStore,
+  clearSharedDevPanelSession,
+  clearPendingRedirect
+} from "../../utils/storage.js";
 import { supabase, SUPABASE_READY } from "../supabase/supabaseClient.js";
 
 // ==========================================
@@ -56,10 +61,14 @@ export async function signIn(email, password){
 }
 
 export async function signOut(){
+  clearSharedDevPanelSession();
+  clearPendingRedirect();
+
   if(!SUPABASE_READY){
     clearMockSession();
     return;
   }
+
   const { error } = await supabase.auth.signOut();
   if(error) throw error;
 }

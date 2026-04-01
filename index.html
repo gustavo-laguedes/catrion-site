@@ -79,15 +79,22 @@
               <div class="fake-row" style="width: 64%"></div>
               <div class="fake-row" style="width: 92%"></div>
 
-              <div class="card">
-                <div class="card-inner">
-                  <div class="small">Prévia animada (mock)</div>
-                  <div style="height:10px"></div>
-                  <div class="fake-row" style="width: 55%"></div>
-                  <div style="height:10px"></div>
-                  <div class="fake-row" style="width: 78%"></div>
-                </div>
-              </div>
+              <div class="card preview-card">
+  <div class="card-inner">
+
+    <div class="preview-header">
+      <span class="preview-title">Preview do Core</span>
+      <span class="preview-sub">Interface real em produção</span>
+    </div>
+
+    <div class="preview-slider">
+      <img id="previewImage" src="assets/home-dock.png" alt="Preview Core">
+    </div>
+
+    <div class="preview-dots" id="previewDots"></div>
+
+  </div>
+</div>
 
               <div class="fake-row" style="width: 70%"></div>
             </div>
@@ -127,7 +134,7 @@
 
       <div style="height:10px"></div>
       <button class="btn btn-primary btn-small" type="button" id="btnCoreDetails">
-        Ver o que o Core faz
+        Veja o que o Core faz
       </button>
     </div>
   </div>
@@ -211,7 +218,7 @@
 </p>
 
 <div class="partners" style="margin-top:16px">
-  <div class="kicker">PARCEIROS EM PRODUÇÃO</div>
+  <div class="kicker">PARCEIROS</div>
   <div class="partners-row">
   <a
   class="partner-card partner-link"
@@ -224,7 +231,7 @@
     <img class="partner-logo" src="assets/clubedosuplemento-logo.png" alt="Clube do Suplemento" />
     <div class="partner-meta">
       <div class="partner-name">Clube do Suplemento</div>
-      <div class="muted small">Primeiro parceiro com o Core em implantação.</div>
+      <div class="muted small">Primeiro parceiro da Catrion.</div>
     </div>
   </div>
 </a>
@@ -270,39 +277,57 @@
   </form>
 
   <div class="contact-side">
-    <div class="contact-box">
-      <div class="kicker">REDES</div>
+  <div class="contact-box">
+    <div class="kicker">REDES</div>
 
-      <div class="social">
-        <img src="assets/instagram-logo.png" alt="Instagram" class="social-ico">
-        <div class="social-meta">
-          <div class="social-name">Instagram</div>
-          <div class="muted small">link: (colocar aqui depois)</div>
-        </div>
+    <a
+      class="social social-link"
+      href="https://www.instagram.com/catrion.tech/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Abrir Instagram da Catrion"
+    >
+      <img src="assets/instagram-logo.png" alt="Instagram" class="social-ico">
+      <div class="social-meta">
+        <div class="social-name">Instagram</div>
+        <div class="muted small">@catrion.tech</div>
       </div>
+    </a>
 
-      <div class="social">
-        <img src="assets/linkedin-logo.png" alt="LinkedIn" class="social-ico">
-        <div class="social-meta">
-          <div class="social-name">LinkedIn</div>
-          <div class="muted small">https://www.linkedin.com/company/catriontech/</div>
-        </div>
+    <a
+      class="social social-link"
+      href="https://www.linkedin.com/company/catriontech/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Abrir LinkedIn da Catrion"
+    >
+      <img src="assets/linkedin-logo.png" alt="LinkedIn" class="social-ico">
+      <div class="social-meta">
+        <div class="social-name">LinkedIn</div>
+        <div class="muted small">Catrion Tecnologia e Criação</div>
       </div>
+    </a>
 
-      <div class="social">
-        <img src="assets/whatsapp-logo.png" alt="WhatsApp" class="social-ico">
-        <div class="social-meta">
-          <div class="social-name">WhatsApp</div>
-          <div class="muted small">link: (colocar aqui depois)</div>
-        </div>
+    <a
+      class="social social-link"
+      href="https://wa.me/5512997770044?text=Olá%2C%20vim%20pelo%20site%20da%20Catrion%20e%20quero%20saber%20mais."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Falar com a Catrion no WhatsApp"
+    >
+      <img src="assets/whatsapp-logo.png" alt="WhatsApp" class="social-ico">
+      <div class="social-meta">
+        <div class="social-name">WhatsApp</div>
+        <div class="muted small">(12) 99777-0044</div>
       </div>
+    </a>
 
-      <div style="height:10px"></div>
-      <div class="muted small">
-        Assim que o número oficial estiver pronto, a gente coloca o botão direto pro WhatsApp aqui.
-      </div>
+    <div style="height:10px"></div>
+    <div class="muted small">
+      Fale com a gente direto pelas redes ou pelo WhatsApp.
     </div>
   </div>
+</div>
 </div>
         
         </div>

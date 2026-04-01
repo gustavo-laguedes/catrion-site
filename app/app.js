@@ -1,6 +1,8 @@
 import { $ } from "./utils/dom.js";
+import { $, mountHTML } from "./utils/dom.js";
 import { getSession, signOut, onAuthStateChange } from "./services/auth/auth.js";
 import { getSelectedTenant } from "./services/tenants/tenants.js";
+import { getPendingRedirect, clearPendingRedirect } from "./utils/storage.js";
 
 import { renderLogin } from "./pages/login/login.js";
 import { renderTenant } from "./pages/tenant/tenant.js";
@@ -31,6 +33,24 @@ const routes = {
 function getHashPath(){
   const h = (location.hash || "#/login").replace(/^#/, "");
   return h.startsWith("/") ? h : ("/" + h);
+}
+
+function getHashQueryParams(){
+  const hash = (location.hash || "").replace(/^#/, "");
+  const queryIndex = hash.indexOf("?");
+  if (queryIndex === -1) return new URLSearchParams();
+
+  return new URLSearchParams(hash.slice(queryIndex + 1));
+}
+
+function getRedirectTarget(){
+  const searchRedirect = new URLSearchParams(window.location.search).get("redirect");
+  if (searchRedirect) return searchRedirect;
+
+  const hashRedirect = getHashQueryParams().get("redirect");
+  if (hashRedirect) return hashRedirect;
+
+  return getPendingRedirect() || "";
 }
 
 function setNavVisibility(isAuthed){
@@ -76,8 +96,20 @@ const router = {
     // Rotas públicas
     const isPublic = (path === "/login" || path === "/reset");
 
-    if(!session && !isPublic){ this.go("/login"); return; }
-    if(session && path === "/login"){ this.go("/tenant"); return; }
+        if(!session && !isPublic){ this.go("/login"); return; }
+
+    if(session && path === "/login"){
+      const redirectTarget = getRedirectTarget();
+
+      if (redirectTarget) {
+        clearPendingRedirect();
+        window.location.href = redirectTarget;
+        return;
+      }
+
+      this.go("/tenant");
+      return;
+    }
 
     await loadPageCSS(routes[path].css);
     await routes[path].render(root, this);

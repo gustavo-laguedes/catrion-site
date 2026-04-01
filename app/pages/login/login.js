@@ -1,20 +1,30 @@
 import { $, mountHTML } from "../../utils/dom.js";
 import { signIn, requestPasswordReset } from "../../services/auth/auth.js";
+import {
+  clearPortalSelections,
+  setPendingRedirect,
+  getPendingRedirect,
+  clearPendingRedirect
+} from "../../utils/storage.js";
+import { getAccessContext } from "../../services/tenants/tenants.js";
 
 export async function renderLogin(root, router){
   const html = await fetch("./pages/login/login.html").then(r => r.text());
   mountHTML(root, html);
 
-  const form     = $("#loginForm");
-  const email    = $("#email");
-  const password = $("#password");
+    const redirectTarget = getRedirectFromUrl();
+  if (redirectTarget) {
+    setPendingRedirect(redirectTarget);
+  }
 
+  const form = $("#loginForm");
+  const email = $("#email");
+  const password = $("#password");
   const btnForgot = document.getElementById("btnForgot");
 
-  // PWA buttons
-  const btnInstall      = document.getElementById("btnInstall");
-  const btnHowInstall   = document.getElementById("btnHowInstall");
-  const btnHowInstallIOS= document.getElementById("btnHowInstallIOS");
+  const btnInstall = document.getElementById("btnInstall");
+  const btnHowInstall = document.getElementById("btnHowInstall");
+  const btnHowInstallIOS = document.getElementById("btnHowInstallIOS");
 
   let deferredPrompt = null;
 
@@ -28,7 +38,7 @@ export async function renderLogin(root, router){
     btnInstall.disabled = true;
     btnInstall.addEventListener("click", async () => {
       if (!deferredPrompt){
-        alert("Instalação automática não disponível agora. No Android/PC: menu ⋮ do navegador → “Instalar app”.");
+        alert("Instalação automática não disponível agora. No Android/PC: menu do navegador → Instalar app.");
         return;
       }
       deferredPrompt.prompt();
@@ -40,17 +50,16 @@ export async function renderLogin(root, router){
 
   if (btnHowInstall){
     btnHowInstall.addEventListener("click", () => {
-      alert("Android/PC: procure o botão “Instalar” no navegador ou abra o menu ⋮ e escolha “Instalar app / Instalar Catrion”.");
+      alert("Android/PC: procure o botão “Instalar” no navegador ou abra o menu e escolha “Instalar app”.");
     });
   }
 
   if (btnHowInstallIOS){
     btnHowInstallIOS.addEventListener("click", () => {
-      alert("iPhone (iOS): Safari → Compartilhar → “Adicionar à Tela de Início”.");
+      alert("iPhone (iOS): Safari → Compartilhar → Adicionar à Tela de Início.");
     });
   }
 
-  // ✅ Agora sim: o botão existe porque o HTML já foi montado.
   if (btnForgot){
     btnForgot.addEventListener("click", async (e) => {
       e.preventDefault();
@@ -75,14 +84,42 @@ export async function renderLogin(root, router){
     e.preventDefault();
 
     const emailVal = (email.value || "").trim();
-    const passVal  = (password?.value || "").trim();
+    const passVal = (password?.value || "").trim();
 
     try{
-      await signIn(emailVal, passVal);
+            await signIn(emailVal, passVal);
+
+      clearPortalSelections();
+      await getAccessContext(true);
+
+      const redirectTarget = resolvePostLoginRedirect();
+
+      if (redirectTarget) {
+        clearPendingRedirect();
+        window.location.href = redirectTarget;
+        return;
+      }
+
       router.go("/tenant");
     }catch(err){
       console.error(err);
       alert(err?.message || "Não foi possível entrar.");
     }
   });
+}
+
+function getRedirectFromUrl(){
+  const searchRedirect = new URLSearchParams(window.location.search).get("redirect");
+  if (searchRedirect) return searchRedirect;
+
+  const hash = window.location.hash || "";
+  const queryIndex = hash.indexOf("?");
+  if (queryIndex === -1) return "";
+
+  const query = hash.slice(queryIndex + 1);
+  return new URLSearchParams(query).get("redirect") || "";
+}
+
+function resolvePostLoginRedirect(){
+  return getPendingRedirect() || getRedirectFromUrl() || "";
 }

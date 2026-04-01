@@ -267,3 +267,94 @@
 .partner-link:hover{
   border-color: rgba(255,77,26,.30);
 }
+
+.social-link{
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.social-link:visited{
+  color: inherit;
+}
+
+.social-link:hover{
+  background: rgba(255,255,255,.02);
+}
+
+.social-link:focus-visible{
+  outline: 2px solid rgba(255,77,26,.55);
+  outline-offset: 3px;
+}
+
+.preview-slider{
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.preview-slider img{
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  transition: opacity .4s ease;
+}
+
+.preview-card{
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.preview-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 8px;
+}
+
+.preview-title{
+  font-weight:600;
+  font-size:13px;
+  opacity:.85;
+}
+
+.preview-sub{
+  font-size:11px;
+  opacity:.5;
+}
+
+.preview-slider{
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0b0f14;
+}
+
+.preview-slider img{
+  width:100%;
+  display:block;
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+.preview-dots{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin-top:10px;
+}
+
+.preview-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background: rgba(255,255,255,.2);
+  cursor:pointer;
+  transition: all .2s ease;
+}
+
+.preview-dot.active{
+  background: #ff4d1a;
+  transform: scale(1.2);
+}

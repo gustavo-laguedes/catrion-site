@@ -32,3 +32,66 @@ if(btnCore) btnCore.addEventListener("click", (e)=>{ e.stopPropagation(); toggle
 if(coreCard) coreCard.addEventListener("click", toggleCore);
 
 })();
+
+const previewImages = [
+  "assets/home-dock.png",
+  "assets/vendas-dock.png",
+  "assets/produtos-dock.png",
+  "assets/caixa-dock.png",
+  "assets/relatorios-dock.png"
+];
+
+let currentIndex = 0;
+let interval;
+const previewEl = document.getElementById("previewImage");
+const dotsContainer = document.getElementById("previewDots");
+
+function renderDots(){
+  if(!dotsContainer) return;
+  dotsContainer.innerHTML = "";
+
+  previewImages.forEach((_, index) => {
+    const dot = document.createElement("div");
+    dot.classList.add("preview-dot");
+    if(index === currentIndex) dot.classList.add("active");
+
+    dot.addEventListener("click", () => {
+      currentIndex = index;
+      updatePreview();
+      restartAuto();
+    });
+
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function updatePreview(){
+  if(!previewEl) return;
+
+  previewEl.style.opacity = 0;
+  previewEl.style.transform = "scale(.98)";
+
+  setTimeout(() => {
+    previewEl.src = previewImages[currentIndex];
+    previewEl.style.opacity = 1;
+    previewEl.style.transform = "scale(1)";
+    renderDots();
+  }, 200);
+}
+
+function startAuto(){
+  interval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % previewImages.length;
+    updatePreview();
+  }, 3000);
+}
+
+function restartAuto(){
+  clearInterval(interval);
+  startAuto();
+}
+
+if(previewEl){
+  renderDots();
+  startAuto();
+}
