@@ -96,10 +96,14 @@ export async function renderLogin(root, router){
       const redirectTarget = resolvePostLoginRedirect();
 
       if (redirectTarget) {
-  const { data } = await supabase.auth.getSession();
+  const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-  const accessToken = data?.session?.access_token;
-  const refreshToken = data?.session?.refresh_token;
+  if (refreshError) {
+    console.warn("[login] refreshSession falhou antes do redirect para o Dev Panel.", refreshError);
+  }
+
+  const accessToken = refreshed?.session?.access_token || "";
+  const refreshToken = refreshed?.session?.refresh_token || "";
 
   if (accessToken && refreshToken) {
     const url = new URL(redirectTarget);

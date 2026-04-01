@@ -136,31 +136,53 @@ const router = {
     }
 
     if (session && path === "/login") {
-      const redirectTarget = getRedirectTarget();
+  const redirectTarget = getRedirectTarget();
 
-      if (redirectTarget) {
-        const accessToken = session?.access_token;
-        const refreshToken = session?.refresh_token;
+  if (redirectTarget) {
+    try {
+      const { supabase } = await import("./services/supabase/supabaseClient.js");
 
-        if (accessToken && refreshToken) {
-          const url = new URL(redirectTarget);
+      let accessToken = "";
+      let refreshToken = "";
 
-          url.searchParams.set("access_token", accessToken);
-          url.searchParams.set("refresh_token", refreshToken);
+      const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
 
-          clearPendingRedirect();
-          window.location.href = url.toString();
-          return;
-        }
-
-        clearPendingRedirect();
-        window.location.href = redirectTarget;
-        return;
+      if (refreshError) {
+        console.warn("[portal] refreshSession falhou antes do redirect para o Dev Panel.", refreshError);
       }
 
-      this.go("/tenant");
-      return;
+      accessToken =
+        refreshed?.session?.access_token ||
+        session?.access_token ||
+        "";
+
+      refreshToken =
+        refreshed?.session?.refresh_token ||
+        session?.refresh_token ||
+        "";
+
+      if (accessToken && refreshToken) {
+        const url = new URL(redirectTarget);
+
+        url.searchParams.set("access_token", accessToken);
+        url.searchParams.set("refresh_token", refreshToken);
+
+        clearPendingRedirect();
+        window.location.href = url.toString();
+        return;
+      }
+    } catch (error) {
+      console.warn("[portal] erro ao preparar redirect autenticado para o Dev Panel.", error);
     }
+
+    clearPendingRedirect();
+    window.location.href = redirectTarget;
+    return;
+  }
+
+  this.go("/tenant");
+  return;
+}
 
     await loadPageCSS(routes[path].css);
     await routes[path].render(root, this);
