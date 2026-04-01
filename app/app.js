@@ -1,4 +1,3 @@
-import { $ } from "./utils/dom.js";
 import { $, mountHTML } from "./utils/dom.js";
 import { getSession, signOut, onAuthStateChange } from "./services/auth/auth.js";
 import { getSelectedTenant } from "./services/tenants/tenants.js";
