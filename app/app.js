@@ -2,7 +2,6 @@ import { $, mountHTML } from "./utils/dom.js";
 import { getSession, signOut, onAuthStateChange } from "./services/auth/auth.js";
 import { getSelectedTenant } from "./services/tenants/tenants.js";
 import { getPendingRedirect, clearPendingRedirect, setPendingRedirect } from "./utils/storage.js";
-import { renderFirstAccess } from "./pages/first-access/first-access.js";
 import { getAccessContext } from "./services/tenants/tenants.js";
 
 
@@ -26,7 +25,6 @@ const routes = {
   "/reset":  { css: "./pages/reset/reset.css",  render: renderReset },
   "/tenant": { css: "./pages/tenant/tenant.css", render: renderTenant },
   "/hub":    { css: "./pages/hub/hub.css",    render: renderHub },
-    "/first-access": { css: "./pages/first-access/first-access.css", render: renderFirstAccess },
 
   "/core": { css: null, render: (root, r)=>renderPlaceholder(root, r, "Core", "Aqui entra o Core real depois.") },
   "/gate": { css: null, render: (root, r)=>renderPlaceholder(root, r, "Gate", "Placeholder do módulo Gate.") },
@@ -287,7 +285,7 @@ const router = {
     let path = getHashPath();
     if(!routes[path]) path = "/login";
 
-        const isPublic = (path === "/login" || path === "/reset" || path === "/first-access");
+        const isPublic = (path === "/login" || path === "/reset");
 
     if(!session && !isPublic){
       this.go("/login");
