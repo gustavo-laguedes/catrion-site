@@ -1,6 +1,21 @@
 import { $, mountHTML } from "../../utils/dom.js";
 import { updatePassword, getSession } from "../../services/auth/auth.js";
 
+async function waitForRecoverySession(timeoutMs = 4000, intervalMs = 200) {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    const session = await getSession();
+    if (session) {
+      return session;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  }
+
+  return null;
+}
+
 export async function renderReset(root, router){
   const html = await fetch("./pages/reset/reset.html").then(r => r.text());
   mountHTML(root, html);
@@ -13,13 +28,41 @@ export async function renderReset(root, router){
   const resetHint = $("#resetHint");
   const resetSessionInfo = $("#resetSessionInfo");
 
-  const session = await getSession();
+  btnBack.addEventListener("click", ()=>router.go("/login"));
 
-  if (!session && resetSessionInfo) {
-    resetSessionInfo.textContent = "Abra esta tela pelo link recebido no e-mail de recuperação.";
+  if (btnSave) {
+    btnSave.disabled = true;
   }
 
-  btnBack.addEventListener("click", ()=>router.go("/login"));
+  if (resetHint) {
+    resetHint.textContent = "Validando link de recuperação...";
+  }
+
+  const session = await waitForRecoverySession();
+
+  if (!session) {
+    if (resetSessionInfo) {
+      resetSessionInfo.textContent = "Link inválido, expirado ou aberto fora do fluxo de recuperação.";
+    }
+
+    if (resetHint) {
+      resetHint.textContent = "Solicite um novo e-mail de recuperação.";
+    }
+
+    return;
+  }
+
+  if (resetSessionInfo) {
+    resetSessionInfo.textContent = "Sessão de recuperação validada. Agora defina sua nova senha.";
+  }
+
+  if (resetHint) {
+    resetHint.textContent = "Use pelo menos 8 caracteres.";
+  }
+
+  if (btnSave) {
+    btnSave.disabled = false;
+  }
 
   form.addEventListener("submit", async (e)=>{
     e.preventDefault();
@@ -41,6 +84,7 @@ export async function renderReset(root, router){
 
     try{
       btnSave.disabled = true;
+
       if (resetHint) {
         resetHint.textContent = "Salvando nova senha...";
       }
@@ -54,6 +98,7 @@ export async function renderReset(root, router){
       alert(err?.message || "Não foi possível atualizar a senha.");
     }finally{
       btnSave.disabled = false;
+
       if (resetHint) {
         resetHint.textContent = "Use pelo menos 8 caracteres.";
       }

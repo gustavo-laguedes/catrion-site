@@ -32,8 +32,24 @@ const routes = {
 };
 
 function getHashPath(){
-  const h = (location.hash || "#/login").replace(/^#/, "");
-  return h.startsWith("/") ? h : ("/" + h);
+  const rawHash = location.hash || "";
+  const hash = rawHash.replace(/^#/, "");
+
+  if (!hash) {
+    return "/login";
+  }
+
+  const isRecoveryHash =
+    hash.startsWith("access_token=") ||
+    hash.includes("type=recovery") ||
+    hash.includes("refresh_token=");
+
+  if (isRecoveryHash) {
+    return "/reset";
+  }
+
+  const pathOnly = hash.split("?")[0];
+  return pathOnly.startsWith("/") ? pathOnly : ("/" + pathOnly);
 }
 
 function getHashQueryParams(){
