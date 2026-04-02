@@ -32,16 +32,36 @@ export function resolveModuleTarget(module){
   return "";
 }
 
+function normalizeList(raw){
+  if (!raw) return [];
+
+  if (Array.isArray(raw)) {
+    return raw
+      .map((item) => String(item || "").trim())
+      .filter(Boolean);
+  }
+
+  return String(raw)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export function buildModuleEntryUrl(baseUrl, tenant, module){
   if (!baseUrl) return "";
 
   const url = new URL(baseUrl, window.location.origin);
+  const permissions = normalizeList(module.permissions);
 
   url.searchParams.set("tenant", tenant.tenantId || "");
   url.searchParams.set("tenant_name", tenant.name || "");
   url.searchParams.set("module", module.key || "");
   url.searchParams.set("role", module.roleKey || "");
   url.searchParams.set("access", module.accessLevel || "");
+
+  if (permissions.length) {
+    url.searchParams.set("permissions", permissions.join(","));
+  }
 
   return url.toString();
 }

@@ -30,25 +30,38 @@ export async function renderLogin(root, router){
   let deferredPrompt = null;
 
   window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (btnInstall) btnInstall.disabled = false;
-  });
+  e.preventDefault();
+  deferredPrompt = e;
+
+  console.log("PWA disponível para instalação");
 
   if (btnInstall){
-    btnInstall.disabled = true;
-    btnInstall.addEventListener("click", async () => {
-      if (!deferredPrompt){
-        alert("Instalação automática não disponível agora. No Android/PC: menu do navegador → Instalar app.");
-        return;
-      }
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      btnInstall.disabled = true;
-    });
+    btnInstall.style.opacity = "1";
+    btnInstall.style.pointerEvents = "auto";
   }
+});
 
+  if (btnInstall){
+  btnInstall.addEventListener("click", async () => {
+    if (!deferredPrompt){
+      alert("Instalação não disponível automaticamente.\n\nNo Android/PC:\nMenu do navegador → Instalar app.");
+      return;
+    }
+
+    try {
+      deferredPrompt.prompt();
+
+      const choice = await deferredPrompt.userChoice;
+      console.log("PWA install result:", choice.outcome);
+
+    } catch (err) {
+      console.error("Erro ao instalar:", err);
+    } finally {
+      deferredPrompt = null;
+    }
+  });
+}
+  
   if (btnHowInstall){
     btnHowInstall.addEventListener("click", () => {
       alert("Android/PC: procure o botão “Instalar” no navegador ou abra o menu e escolha “Instalar app”.");
@@ -61,22 +74,30 @@ export async function renderLogin(root, router){
     });
   }
 
-  if (btnForgot){
+    if (btnForgot){
     btnForgot.addEventListener("click", async (e) => {
       e.preventDefault();
 
       const emailVal = (email.value || "").trim();
       if (!emailVal){
         alert("Digite seu e-mail primeiro.");
+        email.focus();
         return;
       }
 
       try{
+        btnForgot.style.pointerEvents = "none";
+        btnForgot.style.opacity = "0.6";
+
         await requestPasswordReset(emailVal);
-        alert("Enviei um e-mail de recuperação (se existir uma conta com esse e-mail).");
+
+        alert("Se existir uma conta com esse e-mail, enviamos o link de recuperação de senha.");
       }catch(err){
         console.error(err);
         alert(err?.message || "Não foi possível solicitar recuperação de senha.");
+      }finally{
+        btnForgot.style.pointerEvents = "";
+        btnForgot.style.opacity = "";
       }
     });
   }

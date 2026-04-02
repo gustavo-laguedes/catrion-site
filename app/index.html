@@ -20,6 +20,10 @@
 
   <!-- estilos do portal -->
   <link rel="stylesheet" href="./assets/css/app.css" />
+
+  <link rel="manifest" href="/app/manifest.json">
+<meta name="theme-color" content="#0B0F14">
+  
 </head>
 <body>
 
@@ -30,10 +34,18 @@
       </a>
 
       <nav class="nav" id="portalNav" style="display:none;">
-        <a href="#/hub">Hub</a>
-        <a href="#/tenant">Empresa</a>
-        <button class="btn" id="btnLogout">Sair</button>
-      </nav>
+  <a href="#/hub">Hub</a>
+  <a href="#/tenant">Empresa</a>
+
+  <div id="profileBox" class="profile-box">
+    <button class="profile-btn" id="btnProfile">
+      <div class="profile-avatar" id="profileAvatar">U</div>
+      <span id="profileName">Usuário</span>
+    </button>
+  </div>
+
+  <button class="btn" id="btnLogout">Sair</button>
+</nav>
 
       <div id="portalNavAuth" style="display:flex; gap:10px; align-items:center;">
         <span class="small">Portal</span>
@@ -48,5 +60,15 @@
   </main>
 
   <script type="module" src="./app.js"></script>
+
+<a
+  href="https://wa.me/5512997770044?text=Olá,%20sou%20cliente%20da%20Catrion%20e%20preciso%20de%20suporte."
+  target="_blank"
+  class="whatsapp-float"
+  title="Suporte via WhatsApp"
+>
+  💬
+</a>
+  
 </body>
 </html>

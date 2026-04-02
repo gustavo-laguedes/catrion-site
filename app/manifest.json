@@ -1,0 +1,20 @@
+{
+  "name": "Catrion",
+  "short_name": "Catrion",
+  "start_url": "/app/index.html",
+  "display": "standalone",
+  "background_color": "#0B0F14",
+  "theme_color": "#0B0F14",
+  "icons": [
+    {
+      "src": "/assets/catrion-favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/catrion-favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+.reset-wrap{
+  display:flex;
+  justify-content:center;
+  padding: 10px 0 0;
+}
+
+.reset-card{
+  width: 420px;
+  max-width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.reset-header h1{ margin:0; font-size: 22px; }
+.reset-header p{ margin:6px 0 0; }
+
+.reset-form{ display:flex; flex-direction:column; gap: 12px; margin-top: 14px; }
+.reset-actions{ display:flex; gap: 10px; }

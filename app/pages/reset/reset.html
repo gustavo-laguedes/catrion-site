@@ -9,17 +9,40 @@
     <form id="resetForm" class="reset-form" autocomplete="on">
       <label class="field">
         <span class="label">NOVA SENHA</span>
-        <input id="newPassword" name="newPassword" type="password" placeholder="••••••••" autocomplete="new-password" required />
+        <input
+          id="newPassword"
+          name="newPassword"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          required
+        />
       </label>
 
+      <label class="field">
+        <span class="label">CONFIRMAR NOVA SENHA</span>
+        <input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          required
+        />
+      </label>
+
+      <div class="small muted" id="resetHint" style="margin-top:4px;">
+        Use pelo menos 8 caracteres.
+      </div>
+
       <div class="reset-actions">
-        <button class="btn btn-primary" type="submit">Salvar senha</button>
+        <button class="btn btn-primary" type="submit" id="btnSavePassword">Salvar senha</button>
         <button class="btn" type="button" id="btnBackLogin">Voltar</button>
       </div>
     </form>
 
-    <div class="small muted" style="margin-top:12px">
-      Se você chegou aqui pelo e-mail de recuperação, o Supabase vai validar sua sessão automaticamente.
+    <div class="small muted" style="margin-top:12px" id="resetSessionInfo">
+      Se você chegou aqui pelo e-mail de recuperação, o portal deve validar sua sessão automaticamente.
     </div>
 
   </div>

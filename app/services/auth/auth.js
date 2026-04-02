@@ -116,6 +116,36 @@ export async function updatePassword(newPassword){
   if(!SUPABASE_READY){
     throw new Error("Supabase não configurado (SUPABASE_URL / SUPABASE_ANON_KEY).");
   }
-  const { error } = await supabase.auth.updateUser({ password: (newPassword || "").trim() });
+
+  const password = (newPassword || "").trim();
+
+  if (password.length < 8){
+    throw new Error("A nova senha precisa ter pelo menos 8 caracteres.");
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
   if(error) throw error;
+}
+
+export async function updateEmail(newEmail){
+  if(!SUPABASE_READY){
+    throw new Error("Supabase não configurado.");
+  }
+
+  const email = (newEmail || "").trim().toLowerCase();
+
+  if (!email) {
+    throw new Error("E-mail inválido.");
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    email
+  });
+
+  if(error) throw error;
+}
+
+export async function updateUserPassword(newPassword){
+  return updatePassword(newPassword);
 }

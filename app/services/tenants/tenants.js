@@ -51,6 +51,27 @@ function normalizeTenantName(row){
   return row?.trade_name || row?.legal_name || "Empresa";
 }
 
+function uniqueList(list){
+  return Array.from(
+    new Set(
+      (Array.isArray(list) ? list : [])
+        .map((item) => String(item || "").trim())
+        .filter(Boolean)
+    )
+  );
+}
+
+function normalizeModulePermissions(moduleKey, permissions){
+  const prefix = `${String(moduleKey || "").trim().toLowerCase()}.`;
+  if (!prefix || prefix === ".") return [];
+
+  return uniqueList(
+    (permissions || []).filter((permissionKey) =>
+      String(permissionKey || "").toLowerCase().startsWith(prefix)
+    )
+  );
+}
+
 export async function getAccessContext(force = false){
   const store = readStore();
 
@@ -82,7 +103,14 @@ export async function getAccessContext(force = false){
               roleKey: "core_admin",
               roleName: "Administrador",
               accessLevel: "admin",
-              isEnabled: true
+              isEnabled: true,
+              permissions: [
+                "core.home.access",
+                "core.venda.access",
+                "core.produtos.access",
+                "core.caixa.access",
+                "core.relatorios.access"
+              ]
             }
           ]
         }
@@ -102,11 +130,12 @@ export async function getAccessContext(force = false){
     return empty;
   }
 
-    const { data: profile, error: profileError } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("dp_profiles")
     .select("id, full_name, email, is_platform_admin")
     .ilike("email", email)
     .maybeSingle();
+
   if (profileError) throw profileError;
 
   if (!profile) {
@@ -131,6 +160,7 @@ export async function getAccessContext(force = false){
         logo_url
       ),
       dp_roles:role_id (
+        id,
         role_key,
         role_name
       )
@@ -142,6 +172,7 @@ export async function getAccessContext(force = false){
   if (membershipsError) throw membershipsError;
 
   const membershipIds = (memberships || []).map((item) => item.id);
+  const roleIds = uniqueList((memberships || []).map((item) => item.role_id));
 
   let membershipModules = [];
   if (membershipIds.length) {
@@ -153,6 +184,7 @@ export async function getAccessContext(force = false){
         is_enabled,
         module_id,
         dp_modules:module_id (
+          id,
           module_key,
           module_name,
           system_domain,
@@ -165,6 +197,45 @@ export async function getAccessContext(force = false){
     if (error) throw error;
     membershipModules = data || [];
   }
+
+  let rolePermissions = [];
+  if (roleIds.length) {
+    const { data, error } = await supabase
+      .from("dp_role_permissions")
+      .select("role_id, permission_id")
+      .in("role_id", roleIds);
+
+    if (error) throw error;
+    rolePermissions = data || [];
+  }
+
+  const permissionIds = uniqueList(rolePermissions.map((item) => item.permission_id));
+
+  let permissions = [];
+  if (permissionIds.length) {
+    const { data, error } = await supabase
+      .from("dp_permissions")
+      .select("id, permission_key, permission_name, module_key")
+      .in("id", permissionIds);
+
+    if (error) throw error;
+    permissions = data || [];
+  }
+
+  const permissionsById = new Map(
+    (permissions || []).map((item) => [item.id, item])
+  );
+
+  const permissionKeysByRoleId = new Map();
+
+  (rolePermissions || []).forEach((row) => {
+    const permission = permissionsById.get(row.permission_id);
+    if (!permission?.permission_key) return;
+
+    const current = permissionKeysByRoleId.get(row.role_id) || [];
+    current.push(permission.permission_key);
+    permissionKeysByRoleId.set(row.role_id, current);
+  });
 
   const modulesByMembership = new Map();
 
@@ -200,20 +271,22 @@ export async function getAccessContext(force = false){
 
     const roleKey = membership.dp_roles?.role_key || "";
     const roleName = membership.dp_roles?.role_name || "Sem papel";
+    const rolePermissionKeys = uniqueList(permissionKeysByRoleId.get(membership.role_id) || []);
     const modules = modulesByMembership.get(membership.id) || [];
 
     modules.forEach((module) => {
       current.modules.push({
         ...module,
         roleKey,
-        roleName
+        roleName,
+        permissions: normalizeModulePermissions(module.key, rolePermissionKeys)
       });
     });
 
     tenantMap.set(tenantKey, current);
   });
 
-    const access = {
+  const access = {
     profile: {
       id: profile.id,
       fullName: profile.full_name,
@@ -224,8 +297,48 @@ export async function getAccessContext(force = false){
   };
 
   saveAccessContext(access);
-    saveSharedSessionForDevPanel(session, access);
+  saveSharedSessionForDevPanel(session, access);
   return access;
+}
+
+export async function updateProfileBasics(payload = {}){
+  if (!SUPABASE_READY) {
+    throw new Error("Supabase não configurado.");
+  }
+
+  const session = await getSession();
+  const email = session?.user?.email?.trim().toLowerCase();
+
+  if (!email) {
+    throw new Error("Sessão inválida para atualizar perfil.");
+  }
+
+  const fullName = String(payload.fullName || "").trim();
+  const phone = String(payload.phone || "").trim();
+
+  const { data: profile, error: profileError } = await supabase
+    .from("dp_profiles")
+    .select("id")
+    .ilike("email", email)
+    .maybeSingle();
+
+  if (profileError) throw profileError;
+  if (!profile?.id) {
+    throw new Error("Perfil não encontrado para este usuário.");
+  }
+
+  const { error: updateError } = await supabase
+    .from("dp_profiles")
+    .update({
+      full_name: fullName,
+      phone,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", profile.id);
+
+  if (updateError) throw updateError;
+
+  return true;
 }
 
 export async function listTenants(){
