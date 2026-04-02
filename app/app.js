@@ -371,7 +371,17 @@ $("#btnLogout")?.addEventListener("click", async ()=>{
 
 window.addEventListener("hashchange", ()=>router.render());
 
-onAuthStateChange(()=>router.render());
+onAuthStateChange((event) => {
+  console.log("[AUTH EVENT]", event);
+
+  if (event === "PASSWORD_RECOVERY") {
+    console.log("🔐 Entrando em fluxo de recuperação de senha");
+    window.location.hash = "/reset";
+    return;
+  }
+
+  router.render();
+});
 
 router.render();
 
