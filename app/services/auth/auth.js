@@ -2,7 +2,8 @@ import {
   readStore,
   writeStore,
   clearSharedDevPanelSession,
-  clearPendingRedirect
+  clearPendingRedirect,
+  clearPortalSelections
 } from "../../utils/storage.js";
 import { supabase, SUPABASE_READY } from "../supabase/supabaseClient.js";
 
@@ -65,6 +66,7 @@ export async function signOut(options = {}){
   const redirectSnapshot = preserveRedirect ? sessionStorage.getItem("catrion.portal.redirect") || "" : "";
 
   clearSharedDevPanelSession();
+  clearPortalSelections();
 
   if (!preserveRedirect) {
     clearPendingRedirect();

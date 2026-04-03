@@ -131,10 +131,10 @@ export async function getAccessContext(force = false){
   }
 
   const { data: profile, error: profileError } = await supabase
-    .from("dp_profiles")
-    .select("id, full_name, email, is_platform_admin")
-    .ilike("email", email)
-    .maybeSingle();
+  .from("dp_profiles")
+  .select("id, full_name, email, phone, avatar_url, is_platform_admin")
+  .ilike("email", email)
+  .maybeSingle();
 
   if (profileError) throw profileError;
 
@@ -287,14 +287,16 @@ export async function getAccessContext(force = false){
   });
 
   const access = {
-    profile: {
-      id: profile.id,
-      fullName: profile.full_name,
-      email: profile.email,
-      isPlatformAdmin: profile.is_platform_admin === true
-    },
-    tenants: Array.from(tenantMap.values())
-  };
+  profile: {
+    id: profile.id,
+    fullName: profile.full_name,
+    email: profile.email,
+    phone: profile.phone || "",
+    avatarUrl: profile.avatar_url || "",
+    isPlatformAdmin: profile.is_platform_admin === true
+  },
+  tenants: Array.from(tenantMap.values())
+};
 
   saveAccessContext(access);
   saveSharedSessionForDevPanel(session, access);

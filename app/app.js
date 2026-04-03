@@ -93,20 +93,39 @@ function setNavVisibility(isAuthed){
   $("#portalNavAuth").style.display = isAuthed ? "none" : "flex";
 }
 
+function syncTopbar(routePath){
+  const backBtn = document.getElementById("btnBackToTenants");
+  const tenantBadge = document.getElementById("topbarTenantBadge");
+  const tenant = getSelectedTenant();
+
+  if (!backBtn || !tenantBadge) return;
+
+  const shouldShowHubTools = routePath === "/hub" && !!tenant;
+
+  backBtn.style.display = shouldShowHubTools ? "inline-flex" : "none";
+  tenantBadge.style.display = shouldShowHubTools ? "inline-flex" : "none";
+  tenantBadge.textContent = tenant?.name || "Empresa";
+}
+
 async function renderProfileUI(){
   const profileNameEl = document.getElementById("profileName");
   const profileAvatarEl = document.getElementById("profileAvatar");
 
   try {
-    const access = await getAccessContext();
+    const access = await getAccessContext(true);
     const name = access?.profile?.fullName || "Usuário";
+    const avatarUrl = access?.profile?.avatarUrl || "";
 
     if (profileNameEl) {
       profileNameEl.textContent = name.split(" ")[0];
     }
 
     if (profileAvatarEl) {
-      profileAvatarEl.textContent = name.charAt(0).toUpperCase();
+      if (avatarUrl) {
+        profileAvatarEl.innerHTML = `<img src="${avatarUrl}" alt="avatar do usuário" class="profile-avatar-image" />`;
+      } else {
+        profileAvatarEl.textContent = name.charAt(0).toUpperCase();
+      }
     }
   } catch (e) {
     console.warn("Erro ao carregar perfil", e);
@@ -118,38 +137,44 @@ function openProfileModal(){
   if (existing) existing.remove();
 
   const modal = document.createElement("div");
-  modal.className = "modal-overlay";
+  modal.className = "profile-modal-overlay";
   modal.id = "profileModal";
 
   modal.innerHTML = `
-    <div class="modal">
-      <h3>Meu perfil</h3>
+    <div class="profile-modal-card">
+      <h3 class="profile-modal-title">Meu perfil</h3>
 
-      <div class="form">
-  <label class="label">Nome</label>
-  <input class="input" id="profileFullName" />
+      <div class="profile-form-grid">
+        <label class="label">Nome</label>
+        <input class="input" id="profileFullName" />
 
-  <label class="label">Telefone</label>
-  <input class="input" id="profilePhone" />
+        <label class="label">Telefone</label>
+        <input class="input" id="profilePhone" />
 
-  <div style="height:8px;"></div>
+        <div style="height:8px;"></div>
 
-  <label class="label">E-mail</label>
-  <input class="input" id="profileEmail" />
+        <label class="label">E-mail</label>
+        <input class="input" id="profileEmail" />
 
-  <label class="label">Nova senha</label>
-  <input class="input" id="profilePassword" type="password" />
+        <label class="label">Nova senha</label>
+        <input class="input" id="profilePassword" type="password" />
 
-  <label class="label">Confirmar senha</label>
-  <input class="input" id="profilePasswordConfirm" type="password" />
-</div>
+        <label class="label">Confirmar senha</label>
+        <input class="input" id="profilePasswordConfirm" type="password" />
+      </div>
 
-      <div class="modal-actions">
-        <button class="btn btn-primary" id="btnSaveProfile">Salvar</button>
-        <button class="btn" id="btnCloseProfile">Fechar</button>
+      <div class="profile-modal-actions">
+        <button class="btn btn-primary" id="btnSaveProfile" type="button">Salvar</button>
+        <button class="btn" id="btnCloseProfile" type="button">Fechar</button>
       </div>
     </div>
   `;
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  });
 
   document.body.appendChild(modal);
 
@@ -301,6 +326,8 @@ const router = {
     let path = getHashPath();
     if(!routes[path]) path = "/login";
 
+    syncTopbar(path);
+
         const isPublic = (path === "/login" || path === "/reset");
 
     if(!session && !isPublic){
@@ -363,6 +390,10 @@ const router = {
 };
 
 document.getElementById("btnProfile")?.addEventListener("click", openProfileModal);
+
+document.getElementById("btnBackToTenants")?.addEventListener("click", () => {
+  router.go("/tenant");
+});
 
 $("#btnLogout")?.addEventListener("click", async ()=>{
   await signOut();

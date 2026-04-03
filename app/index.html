@@ -34,17 +34,18 @@
       </a>
 
       <nav class="nav" id="portalNav" style="display:none;">
-  <a href="#/hub">Hub</a>
-  <a href="#/tenant">Empresa</a>
+  <button class="btn" id="btnBackToTenants" style="display:none;">Voltar</button>
+
+  <span class="badge" id="topbarTenantBadge" style="display:none;">Empresa</span>
 
   <div id="profileBox" class="profile-box">
-    <button class="profile-btn" id="btnProfile">
+    <button class="profile-btn" id="btnProfile" type="button">
       <div class="profile-avatar" id="profileAvatar">U</div>
       <span id="profileName">Usuário</span>
     </button>
   </div>
 
-  <button class="btn" id="btnLogout">Sair</button>
+  <button class="btn" id="btnLogout" type="button">Sair</button>
 </nav>
 
       <div id="portalNavAuth" style="display:flex; gap:10px; align-items:center;">
