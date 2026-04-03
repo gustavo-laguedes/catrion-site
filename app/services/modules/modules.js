@@ -53,8 +53,9 @@ export function buildModuleEntryUrl(baseUrl, tenant, module){
   const url = new URL(baseUrl, window.location.origin);
   const permissions = normalizeList(module.permissions);
 
-  url.searchParams.set("tenant", tenant.tenantId || "");
-  url.searchParams.set("tenant_name", tenant.name || "");
+  url.searchParams.set("tenant", tenant.id || "");
+url.searchParams.set("tenant_slug", tenant.tenantId || "");
+url.searchParams.set("tenant_name", tenant.name || "");
   url.searchParams.set("module", module.key || "");
   url.searchParams.set("role", module.roleKey || "");
   url.searchParams.set("access", module.accessLevel || "");
@@ -62,6 +63,13 @@ export function buildModuleEntryUrl(baseUrl, tenant, module){
   if (permissions.length) {
     url.searchParams.set("permissions", permissions.join(","));
   }
+
+  const store = readStore();
+const userName = store?.portalAccess?.profile?.fullName || "";
+
+if (userName) {
+  url.searchParams.set("user_name", userName);
+}
 
   return url.toString();
 }
