@@ -1,2 +1,7 @@
-<link rel="manifest" href="/app/manifest.json">
-<meta name="theme-color" content="#0B0F14">
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
