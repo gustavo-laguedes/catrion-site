@@ -155,19 +155,6 @@ function setProfileFormEditable(isEditable) {
   }
 }
 
-function syncTopbar(routePath){
-  const backBtn = document.getElementById("btnBackToTenants");
-  const tenantBadge = document.getElementById("topbarTenantBadge");
-  const tenant = getSelectedTenant();
-
-  if (!backBtn || !tenantBadge) return;
-
-  const shouldShowHubTools = routePath === "/hub" && !!tenant;
-
-  backBtn.style.display = shouldShowHubTools ? "inline-flex" : "none";
-  tenantBadge.style.display = shouldShowHubTools ? "inline-flex" : "none";
-  tenantBadge.textContent = tenant?.name || "Empresa";
-}
 
 async function renderProfileUI(){
   const profileNameEl = document.getElementById("profileName");
@@ -525,7 +512,6 @@ const router = {
     let path = getHashPath();
     if(!routes[path]) path = "/login";
 
-    syncTopbar(path);
 
         const isPublic = (path === "/login" || path === "/reset");
 
@@ -590,9 +576,6 @@ const router = {
 
 document.getElementById("btnProfile")?.addEventListener("click", openProfileModal);
 
-document.getElementById("btnBackToTenants")?.addEventListener("click", () => {
-  router.go("/tenant");
-});
 
 $("#btnLogout")?.addEventListener("click", async ()=>{
   closeProfileModal();

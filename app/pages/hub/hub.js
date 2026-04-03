@@ -32,6 +32,10 @@ export async function renderHub(root, router){
 
   $("#tenantBadge").textContent = tenant.name;
 
+  document.getElementById("btnVoltarEmpresasHub")?.addEventListener("click", () => {
+  router.go("/tenant");
+});
+
   const modules = await getTenantModules(tenant.id);
   const grid = $("#hubGrid");
 

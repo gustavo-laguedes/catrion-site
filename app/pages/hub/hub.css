@@ -35,3 +35,7 @@
   transform: none;
   border-color: rgba(255,255,255,.08);
 }
+
+.portal-header .row {
+  justify-content: flex-end;
+}
