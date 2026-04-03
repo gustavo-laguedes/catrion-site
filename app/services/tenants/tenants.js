@@ -316,7 +316,8 @@ export async function updateProfileBasics(payload = {}){
   }
 
   const fullName = String(payload.fullName || "").trim();
-  const phone = String(payload.phone || "").trim();
+const phone = String(payload.phone || "").trim();
+const avatarUrl = String(payload.avatarUrl || "").trim();
 
   const { data: profile, error: profileError } = await supabase
     .from("dp_profiles")
@@ -330,13 +331,14 @@ export async function updateProfileBasics(payload = {}){
   }
 
   const { error: updateError } = await supabase
-    .from("dp_profiles")
-    .update({
-      full_name: fullName,
-      phone,
-      updated_at: new Date().toISOString()
-    })
-    .eq("id", profile.id);
+  .from("dp_profiles")
+  .update({
+    full_name: fullName,
+    phone,
+    avatar_url: avatarUrl,
+    updated_at: new Date().toISOString()
+  })
+  .eq("id", profile.id);
 
   if (updateError) throw updateError;
 

@@ -136,7 +136,7 @@
 .profile-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.62);
+  background: rgba(0, 0, 0, 0.68);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,19 +146,48 @@
 
 .profile-modal-card {
   width: 100%;
-  max-width: 460px;
-  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 18px;
-  box-shadow: 0 24px 80px rgba(0,0,0,.45);
-  padding: 22px;
+  max-width: 520px;
+  background: #151b24;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 22px;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.48);
+  padding: 24px;
+  opacity: 1;
+}
+
+.profile-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .profile-modal-title {
-  margin: 0 0 16px 0;
+  margin: 0;
   font-size: 22px;
   font-weight: 700;
   color: var(--text);
+}
+
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.profile-avatar-xl {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 72px;
+}
+
+.profile-avatar-actions {
+  display: grid;
+  gap: 8px;
 }
 
 .profile-form-grid {
