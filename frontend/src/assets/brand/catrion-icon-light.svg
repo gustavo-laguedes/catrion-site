@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 176" role="img" aria-labelledby="title">
+  <title id="title">Ícone Catrion — versão light</title>
+  <g id="frame" fill="#151517" fill-rule="evenodd">
+    <path d="M0 0H176V96L159 113V17H17V159H115L100 176H0Z"/>
+  </g>
+  <g id="letter-c" fill="#151517" fill-rule="evenodd" transform="translate(-11 0)">
+    <path d="M70 49H145V67H80C77 67 75 70 75 73V103C75 106 77 108 80 108H145V127H70C60 127 53 119 53 109V67C53 57 60 49 70 49Z"/>
+  </g>
+  <g id="accent" fill="#F9B20B" fill-rule="evenodd">
+    <path d="M176 112V142L142 176H115Z"/>
+  </g>
+</svg>
